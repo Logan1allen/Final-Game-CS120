@@ -11,9 +11,14 @@ class LblScore(simpleGE.Label):
 class Game(simpleGE.Scene):
     def __init__(self):
         super().__init__()
+        
+        pygame.mixer.init()
+        pygame.mixer.music.load("waterddrop.WAV")
+        pygame.mixer.music.play(-1,0.0)
+        
         self.setImage("brick.png")
-        backgroundnoise = simpleGE.Sound("crickets.MP3")
-        backgroundnoise.play()
+        #backgroundnoise = simpleGE.Sound("waterddrop.WAV")
+        #backgroundnoise.play()
         
         self.btnLeft = simpleGE.Button()
         self.btnLeft.text = "Go Left"
@@ -32,9 +37,8 @@ class Game(simpleGE.Scene):
         self.btnLright.center = (540, 450)
         
         self.dangerLeft = random.randint(1,2)
-        print(f"{self.dangerLeft}")
-        
         self.dangerRight = random.randint(3,4)
+        
         
         if self.dangerLeft == 2:
             self.dangerRight = 1
@@ -44,7 +48,7 @@ class Game(simpleGE.Scene):
         
         self.score = 0
         self.lblScore = LblScore()
-        
+        self.sound = 1
         
         self.sprites = [
             self.btnLeft,
@@ -55,14 +59,30 @@ class Game(simpleGE.Scene):
             ]
         
     def process(self):
+        
         if self.dangerLeft == 2:
             if self.btnLeft.clicked:
                 self.response = "Go Left"
                 self.stop()
             if self.btnLleft.clicked:
                 self.response = "Listen"
-                breathing = simpleGE.Sound("breathing.MP3")
-                breathing.play()
+                
+                if self.sound == 1:
+                    breathing = simpleGE.Sound("breathing.MP3")
+                    breathing.play()
+                if self.sound == 2:
+                    foot = simpleGE.Sound("foot.MP3")
+                    foot.play()
+                if self.sound == 3:
+                    run = simpleGE.Sound("run.MP3")
+                    run.play()
+                if self.sound == 4:
+                    slowbreath = simpleGE.Sound("slowbreath.MP3")
+                    slowbreath.play()
+                if self.sound == 5:
+                    scream = simpleGE.Sound("Scream.MP3")
+                    scream.play()
+                
         
         if self.dangerLeft == 1:
             if self.btnLeft.clicked:
@@ -70,6 +90,7 @@ class Game(simpleGE.Scene):
                 self.lblScore.text = f"Score: {self.score}"
                 self.dangerLeft = random.randint(1,2)
                 self.dangerRight = random.randint(3,4)
+                self.sound = random.randint(1,5)
                 if self.dangerLeft == 2:
                     self.dangerRight = 1
                 if self.dangerLeft == 1:
@@ -81,11 +102,28 @@ class Game(simpleGE.Scene):
                 self.stop()
             if self.btnLright.clicked:
                 self.response = "Listen"
-                breathing = simpleGE.Sound("breathing.MP3")
-                breathing.play()
+                
+                
+                if self.sound == 1:
+                    breathing = simpleGE.Sound("breathing.MP3")
+                    breathing.play()
+                if self.sound == 2:
+                    foot = pygame.mixer.Sound("foot.MP3")
+                    foot.play()
+                    foot.set_volume(3)
+                if self.sound == 3:
+                    run = simpleGE.Sound("run.MP3")
+                    run.play()
+                if self.sound == 4:
+                    slowbreath = simpleGE.Sound("slowbreath.MP3")
+                    slowbreath.play()
+                if self.sound == 5:
+                    scream = simpleGE.Sound("Scream.MP3")
+                    scream.play()
                 
         if self.dangerRight == 1:
             if self.btnRight.clicked:
+                self.sound = random.randint(1,5)
                 self.score += 1
                 self.lblScore.text = f"Score: {self.score}"
                 self.dangerLeft = random.randint(1,2)
@@ -111,7 +149,8 @@ class Instructions(simpleGE.Scene):
         "Listen Carefully",
         "You are not alone",
         "Find the Right Path",
-        "Do not choose incorrectly"
+        "Scare Warning",
+        "Best Played With Headphones"
             ]
         self.directions.center= (320, 240)
         self.directions.size = (500, 250)
